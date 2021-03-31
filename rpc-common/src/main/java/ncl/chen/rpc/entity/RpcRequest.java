@@ -1,6 +1,6 @@
 package ncl.chen.rpc.entity;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -9,9 +9,12 @@ import java.io.Serializable;
  * @author: Qiuyu
  */
 @Data
-@Builder
+@AllArgsConstructor
 public class RpcRequest implements Serializable {
     private static final long serialVersionUID = 6286211784922808495L;
+
+    public RpcRequest() {}
+
     /**
      * The name of the interface to be called
      */

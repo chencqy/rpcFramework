@@ -1,4 +1,4 @@
-package ncl.chen.rpc.server;
+package ncl.chen.rpc;
 
 import ncl.chen.rpc.entity.RpcRequest;
 import ncl.chen.rpc.entity.RpcResponse;

@@ -12,6 +12,9 @@ import java.io.Serializable;
 @Data
 public class RpcResponse<T> implements Serializable {
     private static final long serialVersionUID = 5485903335130406396L;
+
+    public RpcResponse() {}
+
     /**
      * Response status code
      */
