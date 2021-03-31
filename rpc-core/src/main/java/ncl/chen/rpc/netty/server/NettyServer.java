@@ -10,7 +10,7 @@ import io.netty.handler.logging.LoggingHandler;
 import ncl.chen.rpc.RpcServer;
 import ncl.chen.rpc.codec.CommonDecoder;
 import ncl.chen.rpc.codec.CommonEncoder;
-import ncl.chen.rpc.serializer.JsonSerializer;
+import ncl.chen.rpc.serializer.KryoSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +38,7 @@ public class NettyServer implements RpcServer {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast(new CommonEncoder(new JsonSerializer()));
+                            pipeline.addLast(new CommonEncoder(new KryoSerializer()));
                             pipeline.addLast(new CommonDecoder());
                             pipeline.addLast(new NettyServerHandler());
                         }

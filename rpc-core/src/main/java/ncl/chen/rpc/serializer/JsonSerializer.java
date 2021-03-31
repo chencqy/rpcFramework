@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ncl.chen.rpc.entity.RpcRequest;
 import ncl.chen.rpc.enumeration.SerializerCode;
+import ncl.chen.rpc.exception.SerializeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,8 +24,7 @@ public class JsonSerializer implements CommonSerializer{
             return objectMapper.writeValueAsBytes(obj);
         } catch (JsonProcessingException e) {
             logger.error("An error occurred during serialization: {}", e.getMessage());
-            e.printStackTrace();
-            return null;
+            throw new SerializeException("An error occurred during serialization:");
         }
     }
 
@@ -38,8 +38,7 @@ public class JsonSerializer implements CommonSerializer{
             return obj;
         } catch (IOException e) {
             logger.error("An error occurred during deserialization: {}", e.getMessage());
-            e.printStackTrace();
-            return null;
+            throw new SerializeException("An error occurred during deserialization:");
         }
     }
 
