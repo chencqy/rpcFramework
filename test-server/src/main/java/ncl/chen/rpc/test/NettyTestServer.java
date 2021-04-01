@@ -2,10 +2,8 @@ package ncl.chen.rpc.test;
 
 import ncl.chen.rpc.api.ByeService;
 import ncl.chen.rpc.api.HelloService;
-import ncl.chen.rpc.netty.server.NettyServer;
-import ncl.chen.rpc.registry.DefaultServiceRegistry;
-import ncl.chen.rpc.registry.ServiceRegistry;
-import ncl.chen.rpc.RpcServer;
+import ncl.chen.rpc.serializer.KryoSerializer;
+import ncl.chen.rpc.transport.netty.server.NettyServer;
 
 /**
  * @author: Qiuyu
@@ -14,10 +12,9 @@ public class NettyTestServer {
     public static void main(String[] args) {
         HelloService helloService = new HelloServiceImpl();
         ByeService byeService = new ByeServiceImpl();
-        ServiceRegistry serviceRegistry = new DefaultServiceRegistry();
-        serviceRegistry.register(helloService);
-        serviceRegistry.register(byeService);
-        RpcServer rpcServer = new NettyServer();
-        rpcServer.start(9000);
+        NettyServer server = new NettyServer("127.0.0.1", 9000);
+        server.setSerializer(new KryoSerializer());
+        server.publishService(helloService, HelloService.class);
+//        server.publishService(byeService, ByeService.class);
     }
 }

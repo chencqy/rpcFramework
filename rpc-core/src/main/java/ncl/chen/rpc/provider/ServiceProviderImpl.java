@@ -1,4 +1,4 @@
-package ncl.chen.rpc.registry;
+package ncl.chen.rpc.provider;
 
 import ncl.chen.rpc.enumeration.RpcError;
 import ncl.chen.rpc.exception.RpcException;
@@ -12,33 +12,29 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author: Qiuyu
  */
-public class DefaultServiceRegistry implements ServiceRegistry{
+public class ServiceProviderImpl implements ServiceProvider{
+    private static final Logger logger = LoggerFactory.getLogger(ServiceProviderImpl.class);
 
-    private static final Logger logger = LoggerFactory.getLogger(DefaultServiceRegistry.class);
-
-    private final static Map<String, Object> serviceMap = new ConcurrentHashMap<>();
-    private final static Set<String> registeredService = ConcurrentHashMap.newKeySet();
+    private static final Map<String, Object> serviceMap = new ConcurrentHashMap<>();
+    private static final Set<String> registeredService = ConcurrentHashMap.newKeySet();
 
     @Override
-    public <T> void register(T service) {
+    public <T> void addServiceProvider(T service) {
         String serviceName = service.getClass().getCanonicalName();
         if (registeredService.contains(serviceName)) return;
         registeredService.add(serviceName);
-
         Class<?>[] interfaces = service.getClass().getInterfaces();
         if (interfaces.length == 0) {
             throw new RpcException(RpcError.SERVICE_NOT_IMPLEMENT_ANY_INTERFACE);
         }
-        for(Class<?> i : interfaces) {
+        for (Class<?> i : interfaces) {
             serviceMap.put(i.getCanonicalName(), service);
         }
-
-        logger.info("Register a service: {} to interfaces: {}", serviceName, interfaces);
-
+        logger.info("To interface: {} Register service: {}", interfaces, serviceName);
     }
 
     @Override
-    public Object getService(String serviceName) {
+    public Object getServiceProvider(String serviceName) {
         Object service = serviceMap.get(serviceName);
         if (service == null) {
             throw new RpcException(RpcError.SERVICE_NOT_FOUND);

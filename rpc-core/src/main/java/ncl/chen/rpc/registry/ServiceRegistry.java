@@ -1,5 +1,7 @@
 package ncl.chen.rpc.registry;
 
+import java.net.InetSocketAddress;
+
 /**
  * Interface of Service Registry
  * @author: Qiuyu
@@ -8,15 +10,15 @@ public interface ServiceRegistry {
 
     /**
      * Register a service into the registry
-     * @param service
-     * @param <T>
+     * @param serviceName name of service
+     * @param inetSocketAddress address
      */
-    <T> void register(T service);
+    void register(String serviceName, InetSocketAddress inetSocketAddress);
 
     /**
-     * Get the service from registry by name
-     * @param serviceName the name of service
-     * @return the service
+     * Get the service by its name
+     * @param serviceName name of service
+     * @return address
      */
-    Object getService(String serviceName);
+    InetSocketAddress lookupService(String serviceName);
 }

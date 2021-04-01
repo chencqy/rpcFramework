@@ -1,8 +1,10 @@
-package ncl.chen.rpc;
+package ncl.chen.rpc.handler;
 
 import ncl.chen.rpc.entity.RpcRequest;
 import ncl.chen.rpc.entity.RpcResponse;
 import ncl.chen.rpc.enumeration.ResponseCode;
+import ncl.chen.rpc.provider.ServiceProvider;
+import ncl.chen.rpc.provider.ServiceProviderImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +19,15 @@ public class RequestHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
 
-    public Object handle(RpcRequest rpcRequest, Object service) {
+    private static final ServiceProvider serviceProvider;
+
+    static {
+        serviceProvider = new ServiceProviderImpl();
+    }
+
+    public Object handle(RpcRequest rpcRequest) {
         Object result = null;
+        Object service = serviceProvider.getServiceProvider(rpcRequest.getInterfaceName());
         try {
             result = invokeTargetMethod(rpcRequest, service);
             logger.info("Service: {} successfully called method: {}",
@@ -35,7 +44,7 @@ public class RequestHandler {
         try {
             method = service.getClass().getMethod(rpcRequest.getMethodName(), rpcRequest.getParamTypes());
         } catch (NoSuchMethodException e) {
-            return RpcResponse.fail(ResponseCode.METHOD_NOT_FOUND);
+            return RpcResponse.fail(ResponseCode.METHOD_NOT_FOUND, rpcRequest.getRequestId());
         }
         return method.invoke(service, rpcRequest.getParameters());
 
