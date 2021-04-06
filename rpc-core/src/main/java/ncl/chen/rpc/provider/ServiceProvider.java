@@ -6,12 +6,13 @@ package ncl.chen.rpc.provider;
  */
 public interface ServiceProvider {
 
-    /** Add a service provider
-     *
+    /**
+     * Add a service provider
      * @param service
+     * @param serviceName
      * @param <T>
      */
-    <T> void addServiceProvider(T service);
+    <T> void addServiceProvider(T service, String serviceName);
 
     /**
      * Get service provider by name of service

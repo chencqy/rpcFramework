@@ -20,7 +20,9 @@ public enum RpcError {
     RESPONSE_NOT_MATCH("The response does not match the request"),
     FAILED_TO_CONNECT_TO_SERVICE_REGISTRY("Failed to connect to the registry"),
     REGISTER_SERVICE_FAILED("Failed to register service"),
-    CLIENT_CONNECT_SERVER_FAILURE("The client failed to connect to the server");
+    CLIENT_CONNECT_SERVER_FAILURE("The client failed to connect to the server"),
+    UNKNOWN_ERROR("Unknown error"),
+    SERVICE_SCAN_PACKAGE_NOT_FOUND("The startup class ServiceScan annotation is missing");
 
 
     private final String message;

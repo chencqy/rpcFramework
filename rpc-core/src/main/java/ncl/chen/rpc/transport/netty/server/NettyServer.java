@@ -9,38 +9,35 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import ncl.chen.rpc.codec.CommonDecoder;
 import ncl.chen.rpc.codec.CommonEncoder;
-import ncl.chen.rpc.enumeration.RpcError;
-import ncl.chen.rpc.exception.RpcException;
-import ncl.chen.rpc.provider.ServiceProvider;
 import ncl.chen.rpc.provider.ServiceProviderImpl;
 import ncl.chen.rpc.registry.NacosServiceRegistry;
-import ncl.chen.rpc.registry.ServiceRegistry;
 import ncl.chen.rpc.serializer.CommonSerializer;
-import ncl.chen.rpc.transport.RpcServer;
+import ncl.chen.rpc.transport.AbstractRpcServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetSocketAddress;
 
 /**
  * NIO mode service provider side, implemented using Netty
  * @author: Qiuyu
  */
-public class NettyServer implements RpcServer {
+public class NettyServer extends AbstractRpcServer {
 
     private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
 
-    private final String host;
-    private final int port;
-    private final ServiceRegistry serviceRegistry;
-    private final ServiceProvider serviceProvider;
-    private CommonSerializer serializer;
+    private final CommonSerializer serializer;
 
     public NettyServer(String host, int port) {
+        this(host, port, DEFAULT_SERIALIZER);
+    }
+
+    public NettyServer(String host, int port, Integer serializer) {
         this.host = host;
         this.port = port;
-        this.serviceRegistry = new NacosServiceRegistry();
-        this.serviceProvider = new ServiceProviderImpl();
+        serviceRegistry = new NacosServiceRegistry();
+        serviceProvider = new ServiceProviderImpl();
+        this.serializer = CommonSerializer.getByCode(serializer);
+        scanService();
     }
 
     @Override
@@ -72,19 +69,4 @@ public class NettyServer implements RpcServer {
         }
     }
 
-    @Override
-    public <T> void publishService(Object service, Class<T> serviceClass) {
-        if (serializer == null) {
-            logger.error("Serializer is not set");
-            throw new RpcException(RpcError.SERIALIZER_NOT_FOUND);
-        }
-        serviceProvider.addServiceProvider(service);
-        serviceRegistry.register(serviceClass.getCanonicalName(), new InetSocketAddress(host, port));
-        start();
-    }
-
-    @Override
-    public void setSerializer(CommonSerializer serializer) {
-        this.serializer = serializer;
-    }
 }

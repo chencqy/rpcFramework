@@ -71,9 +71,9 @@ public class ChannelProvider {
                 countDownLatch.countDown();
                 throw new RpcException(RpcError.CLIENT_CONNECT_SERVER_FAILURE);
             }
-            // 第几次重连
+            // How many times to reconnect
             int order = (MAX_RETRY_COUNT - retry) + 1;
-            // 本次重连的间隔
+            // The interval between this reconnection
             int delay = 1 << order;
             logger.error("{}: Connection failed, reconnect for the {}th time...", new Date(), order);
             bootstrap.config().group().schedule(() ->

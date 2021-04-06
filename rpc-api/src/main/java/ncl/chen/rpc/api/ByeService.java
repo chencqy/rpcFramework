@@ -5,4 +5,5 @@ package ncl.chen.rpc.api;
  */
 public interface ByeService {
     String bye(ByeObject object);
+    String bye(String name);
 }

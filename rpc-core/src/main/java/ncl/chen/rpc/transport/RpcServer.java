@@ -8,19 +8,15 @@ import ncl.chen.rpc.serializer.CommonSerializer;
  */
 public interface RpcServer {
 
-    void start();
+    int DEFAULT_SERIALIZER = CommonSerializer.KRYO_SERIALIZER;
 
-    /**
-     * Set serializer
-     * @param serializer
-     */
-    void setSerializer(CommonSerializer serializer);
+    void start();
 
     /**
      * Register a service to Nacos
      * @param service
-     * @param serviceClass
+     * @param serviceName
      * @param <T>
      */
-    <T> void publishService(Object service, Class<T> serviceClass);
+    <T> void publishService(T service, String serviceName);
 }
