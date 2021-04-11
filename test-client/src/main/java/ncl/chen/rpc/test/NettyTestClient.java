@@ -13,7 +13,7 @@ import ncl.chen.rpc.transport.netty.client.NettyClient;
  */
 public class NettyTestClient {
     public static void main(String[] args) {
-        RpcClient client = new NettyClient(CommonSerializer.HESSIAN_SERIALIZER);
+        RpcClient client = new NettyClient(CommonSerializer.DEFAULT_SERIALIZER);
         RpcClientProxy proxy = new RpcClientProxy(client);
         HelloService helloService = proxy.getProxy(HelloService.class);
         ByeService byeService = proxy.getProxy(ByeService.class);
