@@ -42,14 +42,16 @@ public class NettyServer extends AbstractRpcServer {
 
     @Override
     public void start() {
-        EventLoopGroup boosGroup = new NioEventLoopGroup();
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
-            serverBootstrap.group(boosGroup, workerGroup)
+            serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .handler(new LoggingHandler(LogLevel.INFO))
                     .option(ChannelOption.SO_BACKLOG, 256)
+                    .childOption(ChannelOption.SO_KEEPALIVE, true)
+                    .childOption(ChannelOption.TCP_NODELAY, true)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
@@ -64,7 +66,7 @@ public class NettyServer extends AbstractRpcServer {
         } catch (InterruptedException e) {
             logger.error("Errors occurred when starting the server", e);
         }finally {
-            boosGroup.shutdownGracefully();
+            bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
     }

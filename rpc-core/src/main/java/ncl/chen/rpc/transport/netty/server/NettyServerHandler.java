@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.ExecutorService;
 
 /**
+ * Handler that handles RpcRequest in Netty
  * @author: Qiuyu
  */
 public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> {

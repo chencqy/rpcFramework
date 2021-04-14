@@ -47,7 +47,6 @@ public class NacosUtil {
         namingService.registerInstance(serviceName, address.getHostName(), address.getPort());
         NacosUtil.address = address;
         serviceNames.add(serviceName);
-
     }
 
 

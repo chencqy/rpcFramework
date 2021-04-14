@@ -88,8 +88,11 @@ public class ChannelProvider {
         bootstrap.group(eventLoopGroup)
                 .channel(NioSocketChannel.class)
                 //The timeout period of the connection.
-                //If the connection cannot be established after this time, it means the connection has failed.
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000);
+                //If the connection cannot be established after this time,
+                //it means the connection has failed.
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.TCP_NODELAY, true);
         return bootstrap;
     }
 }

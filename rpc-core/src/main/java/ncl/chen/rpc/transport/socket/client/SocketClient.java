@@ -84,7 +84,4 @@ public class SocketClient implements RpcClient {
         }
 
     }
-    public void setSerializer(CommonSerializer serializer) {
-        this.serializer = serializer;
-    }
 }

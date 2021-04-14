@@ -90,9 +90,4 @@ public class NettyClient implements RpcClient {
         return resultFuture;
     }
 
-    @Override
-    public void setSerializer(CommonSerializer serializer) {
-        this.serializer = serializer;
-    }
-
 }

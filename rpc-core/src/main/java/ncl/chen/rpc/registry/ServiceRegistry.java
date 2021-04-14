@@ -14,11 +14,4 @@ public interface ServiceRegistry {
      * @param inetSocketAddress address
      */
     void register(String serviceName, InetSocketAddress inetSocketAddress);
-
-    /**
-     * Get the service by its name
-     * @param serviceName name of service
-     * @return address
-     */
-    InetSocketAddress lookupService(String serviceName);
 }
